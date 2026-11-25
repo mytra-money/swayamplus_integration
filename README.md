@@ -1,47 +1,44 @@
 # SWAYAM Plus Integration
 
-Frappe LMS app for the SWAYAM Plus partner API. It stores credentials, receives webhooks, signs learners in with OpenID Connect, and can report progress and completion.
+Phase 1 signs a SWAYAM Plus learner into Frappe LMS with a Social Login Key and enrolls them in the course from the launch URL.
 
-This is separate from the SIDH integration. The two protocols are not interchangeable.
-
-## DocTypes
-
-- **SWAYAM Plus Settings** stores the API credential, the sign-in credential, and the webhook signing secret. The form has buttons for the basic API test: Test Connection, List Enrollments, Send Progress, and Confirm Completion.
-- **SWAYAM Plus Entitlement** is one SWAYAM Plus enrollment. The document name is the `enrollmentId`.
-- **SWAYAM Plus Webhook Log** stores each signed delivery. The document name is the delivery id, so retries are ignored.
-
-LMS Enrollment gets four read-only fields: Is SWAYAM Plus Enrollment, SWAYAM Plus Enrollment ID, SWAYAM Plus Learner ID, and SWAYAM Plus Access Ended.
+The only DocType is SWAYAM Plus Settings. It stores the sign-in endpoints. The sign-in Client ID and Client Secret are entered only on the Social Login Key. Webhooks, the partner API, and entitlement records are deferred. See [PHASE_2.md](PHASE_2.md).
 
 ## Install
 
 ```bash
 bench --site <site> install-app swayam_plus_integration
+bench --site <site> migrate
 ```
 
-Open **SWAYAM Plus Settings**, save once, and copy the three generated URLs into the SWAYAM Plus Integration page:
+## Social Login Key
+
+Create **Social Login Key** with provider name `SWAYAM Plus`. The document name must be `swayam_plus`.
+
+| Field | Value |
+|---|---|
+| Enable Social Login | Checked |
+| Sign Ups | Allow |
+| Authorize URL | Authorize URL from SWAYAM Plus Settings |
+| Access Token URL | Access Token URL from SWAYAM Plus Settings |
+| API Endpoint | Userinfo URL from SWAYAM Plus Settings |
+| Redirect URL | Redirect URL from SWAYAM Plus Settings |
+| User ID Property | `sub` |
+| Auth URL Data | `{"response_type": "code", "scope": "openid email profile"}` |
+| Client ID and Client Secret | The SWAYAM sign-in credential. Do not store these on SWAYAM Plus Settings. |
+
+Open **SWAYAM Plus Settings**, enable it, save once, and copy the generated values:
 
 | SWAYAM Plus field | Settings field |
 |---|---|
-| API credential | API Client ID and API Client Secret |
 | Sign-in redirect URL | Redirect URL |
 | Auto sign-in URL | Auto Sign-in URL |
-| Webhook receiver URL | Webhook URL |
-| Webhook signing secret | Webhook Signing Secret |
 
-The site that receives webhooks must be reachable over public HTTPS.
+Use the same Base URL host that SWAYAM sends as `iss`. The check is `{Base URL}/oidc`.
 
-## Basic API test
+## What a launch does
 
-1. Paste the API Client ID and secret. Save.
-2. Click **Test Connection**. A successful call shows the client id and both scopes.
-3. On SWAYAM Plus, create the Test drive course, add a test learner, and enroll them. Set the partner course id to the LMS Course name.
-4. Click **List Enrollments** and copy the enrollment id. `sandbox` is true for Test drive.
-5. Click **Send Progress** with that id and a percent such as 40.
-6. Click **Confirm Completion** only when the learner has finished the course. Completion is final.
-
-## What the LMS does after that
-
-- A verified `enrollment.activated` webhook creates an entitlement. If the learner already has an account, it also creates the LMS Enrollment.
-- The first **Go to course** visit hits the Auto Sign-in URL, creates the user from the SWAYAM Plus `sub`, and enrolls them from any stored entitlement.
-- When that enrollment's progress changes, the app posts the percent. At 100 it also posts completion.
-- `enrollment.revoked` marks the entitlement terminated and sets SWAYAM Plus Access Ended. It does not delete the enrollment.
+1. SWAYAM opens the Auto Sign-in URL with `iss`, `target_link_uri`, and optional `login_hint` and `lti_message_hint`.
+2. A guest is sent through the Social Login Key. Frappe creates or matches the user and logs them in.
+3. The browser returns to `ensure_swayam_enrollment`, which creates an LMS Enrollment for `/lms/courses/<course-id>` when that course exists and the learner is not already enrolled.
+4. The learner lands on the course URL. A URL on another site is replaced with `/lms`.

@@ -6,20 +6,16 @@
  "field_order": [
   "enabled",
   "base_url",
-  "api_section",
-  "api_client_id",
-  "api_client_secret",
   "signin_section",
-  "signin_client_id",
-  "signin_client_secret",
+  "issuer",
+  "authorize_url",
+  "access_token_url",
+  "userinfo_url",
   "column_break_signin",
+  "scope",
+  "social_login_key",
   "redirect_url",
-  "sso_start_url",
-  "webhook_section",
-  "webhook_secret",
-  "webhook_previous_secret",
-  "column_break_webhook",
-  "webhook_url"
+  "sso_start_url"
  ],
  "fields": [
   {
@@ -36,79 +32,70 @@
    "reqd": 1
   },
   {
-   "fieldname": "api_section",
-   "fieldtype": "Section Break",
-   "label": "API Credential"
-  },
-  {
-   "fieldname": "api_client_id",
-   "fieldtype": "Data",
-   "label": "API Client ID"
-  },
-  {
-   "fieldname": "api_client_secret",
-   "fieldtype": "Password",
-   "label": "API Client Secret"
-  },
-  {
+   "description": "Copy these values onto the Social Login Key named swayam_plus. Enter the sign-in Client ID and Client Secret only on that key.",
    "fieldname": "signin_section",
    "fieldtype": "Section Break",
    "label": "Learner Sign-in"
   },
   {
-   "description": "OpenID Connect client. Separate from the API credential.",
-   "fieldname": "signin_client_id",
+   "fieldname": "issuer",
    "fieldtype": "Data",
-   "label": "Sign-in Client ID"
+   "label": "Issuer",
+   "read_only": 1
   },
   {
-   "fieldname": "signin_client_secret",
-   "fieldtype": "Password",
-   "label": "Sign-in Client Secret"
+   "description": "Social Login Key Authorize URL.",
+   "fieldname": "authorize_url",
+   "fieldtype": "Data",
+   "label": "Authorize URL",
+   "read_only": 1
+  },
+  {
+   "description": "Social Login Key Access Token URL.",
+   "fieldname": "access_token_url",
+   "fieldtype": "Data",
+   "label": "Access Token URL",
+   "read_only": 1
+  },
+  {
+   "description": "Social Login Key API Endpoint.",
+   "fieldname": "userinfo_url",
+   "fieldtype": "Data",
+   "label": "Userinfo URL",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_signin",
    "fieldtype": "Column Break"
   },
   {
+   "default": "openid email profile",
+   "description": "Use this as the scope inside Social Login Key Auth URL Data, with response_type code.",
+   "fieldname": "scope",
+   "fieldtype": "Data",
+   "label": "Scope",
+   "read_only": 1
+  },
+  {
+   "default": "swayam_plus",
+   "description": "Social Login Key document name. Set the provider name to SWAYAM Plus.",
+   "fieldname": "social_login_key",
+   "fieldtype": "Data",
+   "label": "Social Login Key",
+   "read_only": 1
+  },
+  {
+   "description": "Social Login Key Redirect URL, and the SWAYAM sign-in redirect URL.",
    "fieldname": "redirect_url",
    "fieldtype": "Data",
    "label": "Redirect URL",
    "read_only": 1
   },
   {
-   "description": "Register this as the Auto sign-in URL on the sign-in credential.",
+   "description": "Register this as the Auto sign-in URL on the SWAYAM sign-in credential.",
    "fieldname": "sso_start_url",
    "fieldtype": "Data",
    "label": "Auto Sign-in URL",
-   "read_only": 1
-  },
-  {
-   "fieldname": "webhook_section",
-   "fieldtype": "Section Break",
-   "label": "Webhook"
-  },
-  {
-   "description": "Signing secret shown once when the webhook is created. It starts with whsec_.",
-   "fieldname": "webhook_secret",
-   "fieldtype": "Password",
-   "label": "Webhook Signing Secret"
-  },
-  {
-   "description": "Optional. Keep the previous secret here for 24 hours after rotation.",
-   "fieldname": "webhook_previous_secret",
-   "fieldtype": "Password",
-   "label": "Previous Webhook Secret"
-  },
-  {
-   "fieldname": "column_break_webhook",
-   "fieldtype": "Column Break"
-  },
-  {
-   "description": "Register this as the webhook receiver URL.",
-   "fieldname": "webhook_url",
-   "fieldtype": "Data",
-   "label": "Webhook URL",
    "read_only": 1
   }
  ],
@@ -116,7 +103,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-11-25 12:30:00.000000",
+ "modified": "2026-11-25 17:40:00.000000",
  "modified_by": "Administrator",
  "module": "SWAYAM Plus",
  "name": "SWAYAM Plus Settings",

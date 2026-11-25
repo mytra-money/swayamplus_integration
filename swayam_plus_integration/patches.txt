@@ -3,3 +3,4 @@
 
 [post_model_sync]
 # Patches added in this section will be executed after doctypes are migrated
+swayam_plus_integration.patches.remove_phase2_doctypes

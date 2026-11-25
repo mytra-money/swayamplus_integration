@@ -3,7 +3,7 @@ name = "swayam_plus_integration"
 authors = [
     { name = "Mytra", email = "hello@mytra.money"}
 ]
-description = "SWAYAM Plus partner API, sign-in, and webhooks for Frappe LMS"
+description = "SWAYAM Plus sign-in and course enrollment for Frappe LMS"
 requires-python = ">=3.10"
 readme = "README.md"
 dynamic = ["version"]
