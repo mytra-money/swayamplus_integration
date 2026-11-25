@@ -15,10 +15,7 @@ fixtures = [
 				"name",
 				"in",
 				[
-					"LMS Enrollment-is_swayam_enrollment",
 					"LMS Enrollment-swayam_enrollment_id",
-					"LMS Enrollment-swayam_learner_sub",
-					"LMS Enrollment-swayam_access_ended",
 				],
 			]
 		],

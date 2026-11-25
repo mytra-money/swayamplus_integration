@@ -6,7 +6,12 @@
  "field_order": [
   "enabled",
   "base_url",
-  "sso_start_url"
+  "sso_start_url",
+  "api_section",
+  "api_client_id",
+  "column_break_api",
+  "api_client_secret",
+  "api_scopes"
  ],
  "fields": [
   {
@@ -29,13 +34,43 @@
    "fieldtype": "Data",
    "label": "Auto Sign-in URL",
    "read_only": 1
+  },
+  {
+   "description": "Partner API credential from SWAYAM Plus → API access → Create API credential. Used later to list enrollments and report progress and completion. Separate from the Social Login sign-in credential.",
+   "fieldname": "api_section",
+   "fieldtype": "Section Break",
+   "label": "API Access"
+  },
+  {
+   "description": "Client ID from the SWAYAM Plus API credential.",
+   "fieldname": "api_client_id",
+   "fieldtype": "Data",
+   "label": "API Client ID"
+  },
+  {
+   "fieldname": "column_break_api",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Client secret shown when the API credential is created. Store it here; SWAYAM shows it once.",
+   "fieldname": "api_client_secret",
+   "fieldtype": "Password",
+   "label": "API Client Secret"
+  },
+  {
+   "default": "partner.enrollments:read partner.completions:write partner.reconciliation:read",
+   "description": "Scopes the partner API credential is expected to request when exchanging a client-credentials token.",
+   "fieldname": "api_scopes",
+   "fieldtype": "Small Text",
+   "label": "API Scopes",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-11-25 17:45:00.000000",
+ "modified": "2026-11-25 19:00:00.000000",
  "modified_by": "Administrator",
  "module": "SWAYAM Plus",
  "name": "SWAYAM Plus Settings",

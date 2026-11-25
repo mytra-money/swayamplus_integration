@@ -74,6 +74,11 @@ def ensure_swayam_enrollment(
 
 
 def _enroll_if_needed(user: str, course_id: str, enrollment_id: str | None = None):
+	"""Create LMS Enrollment for a SWAYAM launch.
+
+	SkillDzire does not use LMS paid-course or published eligibility for partner
+	launches. ``managed_by_caller`` skips those LMS Enrollment gates.
+	"""
 	if not frappe.db.exists("LMS Course", course_id):
 		frappe.log_error(
 			title="SWAYAM enroll: course not found",
@@ -81,7 +86,23 @@ def _enroll_if_needed(user: str, course_id: str, enrollment_id: str | None = Non
 		)
 		return
 
-	if frappe.db.exists("LMS Enrollment", {"course": course_id, "member": user}):
+	has_enrollment_id = frappe.get_meta("LMS Enrollment").has_field("swayam_enrollment_id")
+	existing = frappe.db.get_value(
+		"LMS Enrollment",
+		{"course": course_id, "member": user},
+		["name", "swayam_enrollment_id"] if has_enrollment_id else "name",
+		as_dict=True,
+	)
+	if existing:
+		if (
+			enrollment_id
+			and has_enrollment_id
+			and not existing.swayam_enrollment_id
+		):
+			frappe.db.set_value(
+				"LMS Enrollment", existing.name, "swayam_enrollment_id", enrollment_id
+			)
+			frappe.db.commit()
 		return
 
 	doc = frappe.get_doc(
@@ -92,15 +113,19 @@ def _enroll_if_needed(user: str, course_id: str, enrollment_id: str | None = Non
 			"member_type": "Student",
 		}
 	)
-	if enrollment_id and doc.meta.has_field("swayam_enrollment_id"):
+	if enrollment_id and has_enrollment_id:
 		doc.swayam_enrollment_id = enrollment_id
-		if doc.meta.has_field("is_swayam_enrollment"):
-			doc.is_swayam_enrollment = 1
+
+	# Skip LMS paid / unpublished / self-learning checks for SWAYAM partner enrolls.
+	doc.flags.managed_by_caller = True
 
 	try:
 		doc.insert(ignore_permissions=True)
 	except frappe.ValidationError:
-		frappe.log_error(title="SWAYAM enroll failed")
+		frappe.log_error(
+			title="SWAYAM enroll failed",
+			message=f"course={course_id} user={user} swayam_enrollment_id={enrollment_id}",
+		)
 		return
 
 	frappe.db.commit()
