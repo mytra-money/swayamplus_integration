@@ -1,0 +1,48 @@
+[
+ {
+  "doctype": "Custom Field",
+  "dt": "LMS Enrollment",
+  "fieldname": "is_swayam_enrollment",
+  "fieldtype": "Check",
+  "insert_after": "column_break_3",
+  "label": "Is SWAYAM Plus Enrollment",
+  "module": "SWAYAM Plus",
+  "name": "LMS Enrollment-is_swayam_enrollment",
+  "read_only": 1
+ },
+ {
+  "doctype": "Custom Field",
+  "dt": "LMS Enrollment",
+  "fieldname": "swayam_enrollment_id",
+  "fieldtype": "Data",
+  "insert_after": "is_swayam_enrollment",
+  "label": "SWAYAM Plus Enrollment ID",
+  "module": "SWAYAM Plus",
+  "name": "LMS Enrollment-swayam_enrollment_id",
+  "read_only": 1,
+  "search_index": 1
+ },
+ {
+  "doctype": "Custom Field",
+  "dt": "LMS Enrollment",
+  "fieldname": "swayam_learner_sub",
+  "fieldtype": "Data",
+  "insert_after": "swayam_enrollment_id",
+  "label": "SWAYAM Plus Learner ID",
+  "module": "SWAYAM Plus",
+  "name": "LMS Enrollment-swayam_learner_sub",
+  "read_only": 1
+ },
+ {
+  "doctype": "Custom Field",
+  "dt": "LMS Enrollment",
+  "default": "0",
+  "fieldname": "swayam_access_ended",
+  "fieldtype": "Check",
+  "insert_after": "swayam_learner_sub",
+  "label": "SWAYAM Plus Access Ended",
+  "module": "SWAYAM Plus",
+  "name": "LMS Enrollment-swayam_access_ended",
+  "read_only": 1
+ }
+]
