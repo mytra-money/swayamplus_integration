@@ -6,15 +6,6 @@
  "field_order": [
   "enabled",
   "base_url",
-  "signin_section",
-  "issuer",
-  "authorize_url",
-  "access_token_url",
-  "userinfo_url",
-  "column_break_signin",
-  "scope",
-  "social_login_key",
-  "redirect_url",
   "sso_start_url"
  ],
  "fields": [
@@ -25,74 +16,15 @@
    "label": "Enabled"
   },
   {
-   "default": "https://swayamplus.education.gov.in",
+   "default": "https://swayamplus.education.gov.in/oidc",
+   "description": "SWAYAM must send iss as this URL. It already includes /oidc.",
    "fieldname": "base_url",
    "fieldtype": "Data",
    "label": "Base URL",
    "reqd": 1
   },
   {
-   "description": "Copy these values onto the Social Login Key named swayam_plus. Enter the sign-in Client ID and Client Secret only on that key.",
-   "fieldname": "signin_section",
-   "fieldtype": "Section Break",
-   "label": "Learner Sign-in"
-  },
-  {
-   "fieldname": "issuer",
-   "fieldtype": "Data",
-   "label": "Issuer",
-   "read_only": 1
-  },
-  {
-   "description": "Social Login Key Authorize URL.",
-   "fieldname": "authorize_url",
-   "fieldtype": "Data",
-   "label": "Authorize URL",
-   "read_only": 1
-  },
-  {
-   "description": "Social Login Key Access Token URL.",
-   "fieldname": "access_token_url",
-   "fieldtype": "Data",
-   "label": "Access Token URL",
-   "read_only": 1
-  },
-  {
-   "description": "Social Login Key API Endpoint.",
-   "fieldname": "userinfo_url",
-   "fieldtype": "Data",
-   "label": "Userinfo URL",
-   "read_only": 1
-  },
-  {
-   "fieldname": "column_break_signin",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "openid email profile",
-   "description": "Use this as the scope inside Social Login Key Auth URL Data, with response_type code.",
-   "fieldname": "scope",
-   "fieldtype": "Data",
-   "label": "Scope",
-   "read_only": 1
-  },
-  {
-   "default": "swayam_plus",
-   "description": "Social Login Key document name. Set the provider name to SWAYAM Plus.",
-   "fieldname": "social_login_key",
-   "fieldtype": "Data",
-   "label": "Social Login Key",
-   "read_only": 1
-  },
-  {
-   "description": "Social Login Key Redirect URL, and the SWAYAM sign-in redirect URL.",
-   "fieldname": "redirect_url",
-   "fieldtype": "Data",
-   "label": "Redirect URL",
-   "read_only": 1
-  },
-  {
-   "description": "Register this as the Auto sign-in URL on the SWAYAM sign-in credential.",
+   "description": "Register this as the Auto sign-in URL on the SWAYAM sign-in credential. Authorize URL, token URL, userinfo, redirect, client id, and secret belong on the Social Login Key.",
    "fieldname": "sso_start_url",
    "fieldtype": "Data",
    "label": "Auto Sign-in URL",
@@ -103,7 +35,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-11-25 17:40:00.000000",
+ "modified": "2026-11-25 17:45:00.000000",
  "modified_by": "Administrator",
  "module": "SWAYAM Plus",
  "name": "SWAYAM Plus Settings",

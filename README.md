@@ -2,7 +2,7 @@
 
 Phase 1 signs a SWAYAM Plus learner into Frappe LMS with a Social Login Key and enrolls them in the course from the launch URL.
 
-The only DocType is SWAYAM Plus Settings. It stores the sign-in endpoints. The sign-in Client ID and Client Secret are entered only on the Social Login Key. Webhooks, the partner API, and entitlement records are deferred. See [PHASE_2.md](PHASE_2.md).
+The only DocType is SWAYAM Plus Settings. Social Login Key holds the authorize URL, token URL, userinfo URL, redirect URL, and client credentials. Settings only enables sign-in, stores the issuer host, and shows the Auto sign-in URL that SWAYAM calls. Webhooks, the partner API, and entitlement records are deferred. See [PHASE_2.md](PHASE_2.md).
 
 ## Install
 
@@ -19,22 +19,19 @@ Create **Social Login Key** with provider name `SWAYAM Plus`. The document name 
 |---|---|
 | Enable Social Login | Checked |
 | Sign Ups | Allow |
-| Authorize URL | Authorize URL from SWAYAM Plus Settings |
-| Access Token URL | Access Token URL from SWAYAM Plus Settings |
-| API Endpoint | Userinfo URL from SWAYAM Plus Settings |
-| Redirect URL | Redirect URL from SWAYAM Plus Settings |
+| Custom Base URL | Checked |
+| Base URL | `https://swayamplus.education.gov.in/oidc` |
+| Authorize URL | `/auth` |
+| Access Token URL | `/token` |
+| API Endpoint | `/me` |
+| Redirect URL | `/api/method/frappe.integrations.oauth2_logins.custom/swayam_plus` |
 | User ID Property | `sub` |
 | Auth URL Data | `{"response_type": "code", "scope": "openid email profile"}` |
-| Client ID and Client Secret | The SWAYAM sign-in credential. Do not store these on SWAYAM Plus Settings. |
+| Client ID and Client Secret | The SWAYAM sign-in credential |
 
-Open **SWAYAM Plus Settings**, enable it, save once, and copy the generated values:
+Open **SWAYAM Plus Settings**, enable it, and save once. Register **Auto Sign-in URL** on the SWAYAM sign-in credential. Register the Social Login Key redirect URL as the SWAYAM sign-in redirect URL.
 
-| SWAYAM Plus field | Settings field |
-|---|---|
-| Sign-in redirect URL | Redirect URL |
-| Auto sign-in URL | Auto Sign-in URL |
-
-Use the same Base URL host that SWAYAM sends as `iss`. The check is `{Base URL}/oidc`.
+Use the same Base URL that SWAYAM sends as `iss`, including `/oidc`.
 
 ## What a launch does
 

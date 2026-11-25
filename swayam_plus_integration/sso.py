@@ -7,7 +7,7 @@ from frappe.utils import get_url
 from frappe.utils.oauth import get_oauth2_authorize_url
 
 PROVIDER = "swayam_plus"
-DEFAULT_BASE_URL = "https://swayamplus.education.gov.in"
+DEFAULT_BASE_URL = "https://swayamplus.education.gov.in/oidc"
 
 
 @frappe.whitelist(allow_guest=True)
@@ -142,11 +142,8 @@ def _safe_target(target_link_uri: str | None) -> str:
 
 
 def _issuer() -> str:
-	issuer = frappe.db.get_single_value("SWAYAM Plus Settings", "issuer")
-	if issuer:
-		return issuer.rstrip("/")
 	base = frappe.db.get_single_value("SWAYAM Plus Settings", "base_url") or DEFAULT_BASE_URL
-	return f"{base.rstrip('/')}/oidc"
+	return base.rstrip("/")
 
 
 def _redirect(location: str):
