@@ -34,6 +34,7 @@ def start_swayam_login(
 	enrollment_id = lti_message_hint or _query_param(course_url, "swayamEnrollmentId")
 
 	if frappe.session.user != "Guest":
+		_link_pending_entitlements(frappe.session.user)
 		if course_id:
 			_enroll_if_needed(frappe.session.user, course_id, enrollment_id)
 		_redirect(course_url)
@@ -67,10 +68,39 @@ def ensure_swayam_enrollment(
 	if not course:
 		course = _course_id_from_url(next_url)
 
+	_link_pending_entitlements(frappe.session.user)
+
 	if course:
 		_enroll_if_needed(frappe.session.user, course, enrollment_id)
 
 	_redirect(next_url or get_url("/lms"))
+
+
+def _learner_sub(user: str) -> str | None:
+	return frappe.db.get_value(
+		"User Social Login",
+		{"parent": user, "provider": PROVIDER},
+		"userid",
+	)
+
+
+def _link_pending_entitlements(user: str):
+	learner_sub = _learner_sub(user)
+	if not learner_sub or not frappe.db.get_single_value("SWAYAM Plus Settings", "api_client_id"):
+		return
+	try:
+		from swayam_plus_integration.api import get_student_enrollments
+
+		data = get_student_enrollments(learner_sub)
+	except Exception:
+		return
+
+	for row in data.get("enrollments") or []:
+		if row.get("status") == "TERMINATED":
+			continue
+		course = row.get("partnerCourseId")
+		if course:
+			_enroll_if_needed(user, course, row.get("enrollmentId"))
 
 
 def _enroll_if_needed(user: str, course_id: str, enrollment_id: str | None = None):
@@ -86,7 +116,9 @@ def _enroll_if_needed(user: str, course_id: str, enrollment_id: str | None = Non
 		)
 		return
 
-	has_enrollment_id = frappe.get_meta("LMS Enrollment").has_field("swayam_enrollment_id")
+	meta = frappe.get_meta("LMS Enrollment")
+	has_enrollment_id = meta.has_field("swayam_enrollment_id")
+
 	existing = frappe.db.get_value(
 		"LMS Enrollment",
 		{"course": course_id, "member": user},
@@ -94,14 +126,8 @@ def _enroll_if_needed(user: str, course_id: str, enrollment_id: str | None = Non
 		as_dict=True,
 	)
 	if existing:
-		if (
-			enrollment_id
-			and has_enrollment_id
-			and not existing.swayam_enrollment_id
-		):
-			frappe.db.set_value(
-				"LMS Enrollment", existing.name, "swayam_enrollment_id", enrollment_id
-			)
+		if enrollment_id and has_enrollment_id and not existing.swayam_enrollment_id:
+			frappe.db.set_value("LMS Enrollment", existing.name, "swayam_enrollment_id", enrollment_id)
 			frappe.db.commit()
 		return
 

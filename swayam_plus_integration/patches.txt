@@ -3,6 +3,3 @@
 
 [post_model_sync]
 # Patches added in this section will be executed after doctypes are migrated
-swayam_plus_integration.patches.remove_phase2_doctypes
-swayam_plus_integration.patches.remove_extra_enrollment_fields
-swayam_plus_integration.patches.keep_only_swayam_enrollment_id

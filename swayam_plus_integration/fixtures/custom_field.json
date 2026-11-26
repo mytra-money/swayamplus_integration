@@ -1,5 +1,5 @@
 [
-{
+ {
   "doctype": "Custom Field",
   "dt": "LMS Enrollment",
   "fieldname": "swayam_enrollment_id",
@@ -12,5 +12,5 @@
   "name": "LMS Enrollment-swayam_enrollment_id",
   "read_only": 1,
   "search_index": 1
-}
+ }
 ]

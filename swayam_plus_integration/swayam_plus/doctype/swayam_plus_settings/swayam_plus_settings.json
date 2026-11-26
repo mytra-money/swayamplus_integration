@@ -6,12 +6,10 @@
  "field_order": [
   "enabled",
   "base_url",
-  "sso_start_url",
   "api_section",
   "api_client_id",
   "column_break_api",
-  "api_client_secret",
-  "api_scopes"
+  "api_client_secret"
  ],
  "fields": [
   {
@@ -22,27 +20,19 @@
   },
   {
    "default": "https://swayamplus.education.gov.in/oidc",
-   "description": "SWAYAM must send iss as this URL. It already includes /oidc.",
+   "description": "OIDC issuer base URL",
    "fieldname": "base_url",
    "fieldtype": "Data",
    "label": "Base URL",
    "reqd": 1
   },
   {
-   "description": "Register this as the Auto sign-in URL on the SWAYAM sign-in credential. Authorize URL, token URL, userinfo, redirect, client id, and secret belong on the Social Login Key.",
-   "fieldname": "sso_start_url",
-   "fieldtype": "Data",
-   "label": "Auto Sign-in URL",
-   "read_only": 1
-  },
-  {
-   "description": "Partner API credential from SWAYAM Plus → API access → Create API credential. Used later to list enrollments and report progress and completion. Separate from the Social Login sign-in credential.",
    "fieldname": "api_section",
    "fieldtype": "Section Break",
    "label": "API Access"
   },
   {
-   "description": "Client ID from the SWAYAM Plus API credential.",
+   "description": "Partner API Client ID",
    "fieldname": "api_client_id",
    "fieldtype": "Data",
    "label": "API Client ID"
@@ -52,25 +42,17 @@
    "fieldtype": "Column Break"
   },
   {
-   "description": "Client secret shown when the API credential is created. Store it here; SWAYAM shows it once.",
+   "description": "Partner API Client Secret",
    "fieldname": "api_client_secret",
    "fieldtype": "Password",
    "label": "API Client Secret"
-  },
-  {
-   "default": "partner.enrollments:read partner.completions:write partner.reconciliation:read",
-   "description": "Scopes the partner API credential is expected to request when exchanging a client-credentials token.",
-   "fieldname": "api_scopes",
-   "fieldtype": "Small Text",
-   "label": "API Scopes",
-   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-11-25 19:00:00.000000",
+ "modified": "2026-11-26 14:00:00.000000",
  "modified_by": "Administrator",
  "module": "SWAYAM Plus",
  "name": "SWAYAM Plus Settings",
